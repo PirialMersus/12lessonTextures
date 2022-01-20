@@ -14,6 +14,11 @@ const doorHeightTexture = textureLoader.load("/textures/door/height.jpg");
 const doorNormalTexture = textureLoader.load("/textures/door/normal.jpg");
 const doorMetalnessTexture = textureLoader.load("/textures/door/metalness.jpg");
 const doorRoughnessTexture = textureLoader.load("/textures/door/roughness.jpg");
+const matcapTexture = textureLoader.load("/textures/matcaps/3.png");
+const gradientTexture = textureLoader.load("/textures/gradients/3.jpg");
+const olegTexture = textureLoader.load("/textures/oleg.jpg");
+gradientTexture.minFilter = THREE.NearestFilter;
+gradientTexture.magFilter = THREE.NearestFilter;
 /**
  * Base
  */
@@ -25,7 +30,26 @@ const scene = new THREE.Scene();
 
 // materials
 
-const material = new THREE.MeshBasicMaterial();
+// const material = new THREE.MeshBasicMaterial();
+// material.map = doorColorTexture;
+// material.color.set("red");
+// material.wireframe = true;
+// material.opacity = 0.5;
+// material.transparent = true;
+// material.side = THREE.DoubleSide;
+
+// const material = new THREE.MeshDepthMaterial();
+
+// material.flatShading = true;
+// material.matcap = matcapTexture;
+
+const material = new THREE.MeshStandardMaterial();
+material.metalness = 0.45;
+material.roughness = 0.65;
+// material.gradientMap = gradientTexture;
+// material.shininess = 1000;
+// material.specular = new THREE.Color(0xff0000);
+
 const sphere = new THREE.Mesh(
   new THREE.SphereBufferGeometry(0.5, 16, 16),
   material
@@ -38,6 +62,17 @@ const torus = new THREE.Mesh(
 );
 torus.position.x = 1.5;
 scene.add(plane, sphere, torus);
+
+// lights
+
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+scene.add(ambientLight);
+
+const pointLight = new THREE.PointLight(0xffffff, 0.5);
+pointLight.position.x = 2;
+pointLight.position.y = 3;
+pointLight.position.z = 4;
+scene.add(pointLight);
 
 /**
  * Sizes
@@ -99,11 +134,11 @@ const tick = () => {
 
   // Update controls
 
-  sphere.rotation.y = 0.1 * elapsedTime;
+  sphere.rotation.y = 0.2 * elapsedTime;
   sphere.rotation.x = 0.15 * elapsedTime;
-  plane.rotation.y = 0.1 * elapsedTime;
+  plane.rotation.y = 0.2 * elapsedTime;
   plane.rotation.x = 0.15 * elapsedTime;
-  torus.rotation.y = 0.1 * elapsedTime;
+  torus.rotation.y = 0.2 * elapsedTime;
   torus.rotation.x = 0.15 * elapsedTime;
 
   controls.update();
